@@ -28,6 +28,9 @@ function main(array $arguments): void
 		case 'undone':
 			undoneCommand($arguments);
 			break;
+		case 'report':
+			reportCommand($arguments);
+            break;
 		default:
 			echo 'Unknown command: ' . $command;
 			exit(1);
