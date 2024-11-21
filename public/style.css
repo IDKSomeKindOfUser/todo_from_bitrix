@@ -6,6 +6,35 @@ body {
 	font-family: sans-serif;
 }
 
+input[type="checkbox"] {
+	scale: 1.5;
+	margin-right: 10px;
+}
+
+form {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+input[type='text'] {
+	padding: 10px;
+	border-radius: 5px;
+	background-color: #fff;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	width: 100%;
+	margin-right: 10px;
+}
+
+button {
+	padding: 10px 20px;
+	border-radius: 5px;
+	background-color: #0075ff;
+	color: #ffffff;
+	cursor: pointer;
+}
+
+
 .content {
 	display: flex;
 	flex-direction: column;
@@ -17,60 +46,44 @@ body {
 }
 
 .header {
-    font-size: 48px;
+	font-size: 48px;
 }
 
-.main{
+.main {
 	flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 }
 
 .todo {
 	font-size: 20px;
 	padding: 10px;
-    border-radius: 5px;
-    background-color: #ffffff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
+	background-color: #ffffff;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-input[type="checkbox"] {
-	scale: 1.5;
-	margin-right: 10px;
-}
-
-form{
+.footer {
 	display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-input[type='text'] {
-    padding: 10px;
-    border-radius: 5px;
-	background-color: #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
-
-button {
-	padding: 10px 20px;
-    border-radius: 5px;
-    background-color: #0075ff;
-    color: #ffffff;
-    cursor: pointer;
-}
-
-
-.footer{
+	justify-content: space-between;
 	flex-shrink: 0;
 	font-size: 14px;
-    margin: 0 auto;
+	margin: 0 auto;
 	color: #adadad;
+	width: 50%;
 }
 
-.error-message{
+.footer-menu > a {
+	color: inherit;
+}
+
+.is-active {
+	font-weight: 600;
+}
+
+.error-message {
 	background-color: #ff8585;
-    font-size: 20px;
+	font-size: 20px;
 	border-radius: 5px;
 }

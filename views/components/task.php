@@ -9,9 +9,9 @@
 		<input
 			type="checkbox"
 			<?= ($todo['completed']) ? 'checked' : '' ?>
-			<?= (!$isHistory) ? 'disabled' : '' ?>
+			<?= ($isHistory) ? 'disabled' : '' ?>
 		>
-		<?= safe_output($todo['title']); ?>
+		<?= safe_output(truncate($todo['title'], option('TRUNCATE_TODO', 200))); ?>
 	</label>
 </article>
 

@@ -1,9 +1,10 @@
 <?php
 require_once __DIR__ . '/../boot.php';
 
+
 $time = null;
 $isHistory = false;
-$title = 'Todo list';
+$title = option('APP_NAME', 'Todo list');
 $errors = [];
 
 
@@ -42,6 +43,7 @@ if (isset($_GET['date']))
 
 echo view('layout', [
 	'title' => $title,
+	'footerMenu' => require_once ROOT . '/public/footer-menu.php',
 	'content' => view('pages/index', [
         'todos' => getTodos($time),
 		'isHistory' => $isHistory,
