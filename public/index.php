@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
 	if (strlen($title) > 0)
 	{
-		$todo = createTodo($title);
-		addTodo($todo);
+		$todo = new Todo($title);
+		saveTodo($todo);
 		redirect('/');
 	}
 	else
@@ -39,6 +39,8 @@ if (isset($_GET['date']))
 		$title = sprintf('Todo list :: %s', date('j M', $time));
 	}
 }
+
+
 
 
 echo view('layout', [

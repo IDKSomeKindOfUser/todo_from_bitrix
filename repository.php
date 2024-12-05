@@ -1,43 +1,43 @@
 <?php
 
+/**
+ * @param int|null $time
+ * @return Todo[]
+ */
 function getTodos(?int $time = null): array
 {
-	$filePath = getRepositoryPath($time);
+	$connection = getDbConnetion();
 
-	if (!file_exists($filePath) || !empty($todos))
+	$from = date('Y-m-d 00:00:00', $time);
+	$to = date('Y-m-d 23:59:59', $time);
 
+	$result = mysqli_query($connection, "
+		SELECT * FROM todos
+		WHERE created_at BETWEEN '{$from}' AND '{$to}'
+		ORDER BY created_at
+		LIMIT 10
+	");
+
+	if (!$result)
 	{
-		return [];
+		throw new Exception('Database error: ' . mysqli_error($connection));
 	}
 
-	$contents = file_get_contents($filePath);
-	$todos = unserialize($contents, [
-		'allowed_classes' => false,
-	]);
+	$todos = [];
 
-	return is_array($todos) ? $todos : [];
-}
+	while ($row = mysqli_fetch_assoc($result))
+	{
+		$todos[] = new Todo(
+			$row['title'],
+			$row['id'],
+			($row['completed'] === 'Y'),
+			new DateTime($row['created_at']),
+			$row['updated_at'] ? new DateTime($row['updated_at']) : null,
+			$row['completed_at'] ? new DateTime($row['completed_at']) : null
+		);
+	}
 
-function getRepositoryPath(?int $time): string
-{
-	$time = $time ?? time();
-
-	$fileName = date('Y-m-d', $time) . '.txt';
-	return ROOT . '/data/' . $fileName;
-}
-
-function addTodo(array $todo, ?int $time = null): void
-{
-	$todos = getTodos($time);
-	$todos[] = $todo;
-
-	storeTodos($todos);
-}
-
-function storeTodos(array $todos, ?int $time = null): void
-{
-	$filePath = getRepositoryPath($time);
-	file_put_contents($filePath, serialize($todos));
+	return $todos;
 }
 
 function getTodosOrFail(?int $time = null): array
@@ -46,9 +46,42 @@ function getTodosOrFail(?int $time = null): array
 
 	if (empty($todos))
 	{
-		echo 'Nothing to do here' . PHP_EOL;
+		echo 'No todos found' . PHP_EOL;
 		exit();
 	}
 
 	return $todos;
+}
+
+function saveTodo(Todo $todo): bool
+{
+	$connection = getDbConnetion();
+
+	$id = mysqli_real_escape_string($connection, $todo->getId());
+	$title = mysqli_real_escape_string($connection, $todo->getTitle());
+	$completed = $todo->getCompleted() ? 'Y' : 'N';
+	$createdAt = $todo->getCreatedAt()->format('Y-m-d H:i:s');
+	$updatedAt = $todo->getUpdatedAt() ? $todo->getUpdatedAt()->format('Y-m-d H:i:s') : null;
+	$completedAt = $todo->getCompletedAt() ? $todo->getCompletedAt()->format('Y-m-d H:i:s') : null;
+
+	$updatedAt = $updatedAt ? "'{$updatedAt}'" : "NULL";
+	$completedAt = $completedAt ? "'{$completedAt}'" : "NULL";
+
+	$sql = "INSERT INTO todos (id, title, completed, created_at, updated_at, completed_at) VALUES (
+		'{$id}', 
+		'{$title}', 
+		'{$completed}', 
+		'{$createdAt}', 
+		{$updatedAt}, 
+		{$completedAt}
+    )";
+
+	$result = mysqli_query($connection, $sql);
+
+	if (!$result)
+	{
+		throw new Exception('Database error: ' . mysqli_error($connection));
+	}
+
+	return true;
 }

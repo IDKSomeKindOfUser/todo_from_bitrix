@@ -64,6 +64,18 @@ button {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+.todo-time{
+	font-size: 14px;
+	margin-left: 10px;
+	color: #adadad;
+	opacity: 0;
+	transition-duration: 0.3s;
+}
+
+.todo:hover .todo-time {
+	opacity: 1;
+}
+
 .footer {
 	display: flex;
 	justify-content: space-between;

@@ -1,6 +1,6 @@
 <?php
 /**
- * @var array $todo
+ * @var Todo $todo
  * @var bool $isHistory
  */
 ?>
@@ -8,10 +8,12 @@
 	<label>
 		<input
 			type="checkbox"
-			<?= ($todo['completed']) ? 'checked' : '' ?>
+			<?= ($todo->getCompleted()) ? 'checked' : '' ?>
 			<?= ($isHistory) ? 'disabled' : '' ?>
 		>
-		<?= safe_output(truncate($todo['title'], option('TRUNCATE_TODO', 200))); ?>
+		<?= safe_output(truncate($todo->getTitle(), option('TRUNCATE_TODO', 200))); ?>
+		<time datetime="<?= $todo->getCreatedAt()->format(DateTimeInterface::ATOM) ?>"
+			  class="todo-time"><?= $todo->getCreatedAt()->format('M, d'); ?></time>
 	</label>
 </article>
 
